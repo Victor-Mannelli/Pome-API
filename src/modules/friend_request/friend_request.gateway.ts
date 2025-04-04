@@ -47,7 +47,7 @@ export class FriendRequestGateway {
     client.emit('leftRoom', MessageBody);
   }
 
-  @SubscribeMessage('friendRequest')
+  @SubscribeMessage('sendFR')
   async handleSendFriendRequest(
     @MessageBody() friendRequestBody: { room: string; user_id: string; friend_id: string },
     @ConnectedSocket() client: Socket,
@@ -60,7 +60,7 @@ export class FriendRequestGateway {
         avatar: { data: response.requester.avatar },
       },
     };
-    this.server.emit('friendRequest', { friendRequest, sender: client.id });
+    this.server.emit('sendFR', { friendRequest, sender: client.id });
   }
 
   @SubscribeMessage('deleteFR')

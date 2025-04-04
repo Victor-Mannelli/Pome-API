@@ -6,6 +6,7 @@ export const CreateUserSchema = z.object({
   password: z.string(),
   confirmPassword: z.string(),
 });
+
 export const LoginSchema = z.object({
   login: z.string(),
   password: z.string(),

@@ -85,9 +85,8 @@ export class UsersService {
       const userFriendsIds = userFriends.map((user) => {
         if (user.friend_id !== userId) {
           return user.friend_id;
-        } else {
-          return user.user_id;
         }
+        return user.user_id;
       });
       const strangers = await this.usersRepository.findNewPossibleFriends([...userFriendsIds, userId]);
       const FRs = await this.friendRequestRepository.getFriendRequests(userId);
