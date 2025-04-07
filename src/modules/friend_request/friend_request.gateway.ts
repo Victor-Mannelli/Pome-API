@@ -34,17 +34,17 @@ export class FriendRequestGateway {
   server: Server;
 
   @SubscribeMessage('joinFrRoom')
-  handleJoinRoom(@MessageBody() MessageBody: string, @ConnectedSocket() client: Socket): void {
+  handleJoinRoom(@MessageBody() room: string, @ConnectedSocket() client: Socket): void {
     // console.log('user entered FR ws');
-    client.join(MessageBody);
-    client.emit('joinedRoom', MessageBody);
+    client.join(room);
+    client.emit('joinedRoom', room);
   }
 
   @SubscribeMessage('leaveFrRoom')
-  handleLeaveRoom(@MessageBody() MessageBody: string, @ConnectedSocket() client: Socket): void {
+  handleLeaveRoom(@MessageBody() room: string, @ConnectedSocket() client: Socket): void {
     // console.log('user left FR ws');
-    client.leave(MessageBody);
-    client.emit('leftRoom', MessageBody);
+    client.leave(room);
+    client.emit('leftRoom', room);
   }
 
   @SubscribeMessage('sendFR')

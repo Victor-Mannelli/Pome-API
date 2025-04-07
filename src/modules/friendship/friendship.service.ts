@@ -1,9 +1,17 @@
 import { FriendshipRepository } from './friendship.repository';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 
 @Injectable()
 export class FriendshipService {
   constructor(readonly friendshipRepository: FriendshipRepository) {}
+
+  async getFriendshipById(id: string) {
+    return await this.friendshipRepository.findOne(id);
+  }
+
+  async getFriendShipByUserAndFriendId(userId: string, friendId: string) {
+    return await this.friendshipRepository.getFriendShipByUserAndFriendId(userId, friendId);
+  }
 
   async getFriendList(userId: string) {
     const response = await this.friendshipRepository.getFriendList(userId);
@@ -18,7 +26,13 @@ export class FriendshipService {
     return parsedResponse;
   }
 
-  async removeFriend(friendship_id: string) {
-    return await this.friendshipRepository.delete(friendship_id);
+  async removeFriend({ friend_id, user_id }: { friend_id: string; user_id: string }) {
+    const friendship = await this.getFriendShipByUserAndFriendId(user_id, friend_id);
+    if (!friendship) throw new NotFoundException();
+    if (friendship.friend_id !== user_id && friendship.user_id !== user_id) {
+      throw new UnauthorizedException();
+    }
+
+    return await this.friendshipRepository.delete(friendship.friendship_id);
   }
 }

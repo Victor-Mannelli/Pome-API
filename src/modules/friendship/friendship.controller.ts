@@ -11,8 +11,11 @@ export class FriendshipController {
     res.status(200).send(response);
   }
 
-  @Delete(':id')
-  removeFriend(@Param('id') id: string) {
-    return this.friendshipService.removeFriend(id);
+  @Delete('/with/:friend_id')
+  removeFriend(@Param('friend_id') friend_id: string, @Response() res) {
+    return this.friendshipService.removeFriend({
+      user_id: res.locals.user_id,
+      friend_id,
+    });
   }
 }
